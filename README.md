@@ -28,17 +28,18 @@ Download the files listed below and place them under `data/`:
 
 | File | Size | Source |
 |------|------|--------|
+| `Antarctic_years_1989_2024i.pkl` | 22 GB | [Dropbox](https://www.dropbox.com/scl/fi/brr8s8z9s5sty6h7gz89p/Antarctic_years_1989_2024i.pkl?rlkey=qu2olfboxy1yw7awaqavcklia&dl=0) |
+| `DMD_r_5_day_34_0_thin_2_win_7.pkl` | 616 MB | GitHub Release (upload in progress) |
 | `precomputed_results.pkl` | 1.3 GB | GitHub Release (upload in progress) |
-| `dum/year_2023/DMD_r_5_day_34_0_thin_2_win_7.pkl` | 616 MB | GitHub Release (upload in progress) |
-| `Clean_Antarctic_data/Antarctic_years_1989_2024i.pkl` | 22 GB | [Dropbox](https://www.dropbox.com/scl/fi/brr8s8z9s5sty6h7gz89p/Antarctic_years_1989_2024i.pkl?rlkey=qu2olfboxy1yw7awaqavcklia&dl=0) |
 
 > **Note:** The OSI SAF observation data is temporarily hosted on Dropbox via the
 > link above. We will soon upload all data files to Zenodo and Hugging Face
 > for permanent archival.
 
-The precomputed file is enough to generate all figures. The DMD model file
-is only needed if you want to rerun `precompute.py`. The raw observation
-file is only needed if you want to retrain the DMD model from scratch.
+The precomputed file is enough to generate all figures.
+Both `DMD_r_5_day_34_0_thin_2_win_7.pkl` and `precomputed_results.pkl` can
+be regenerated from the raw observations using `train_dmd.py` and
+`precompute.py` (see steps 2–3 below).
 
 ### 2. Train DMD model (optional -- skip if you downloaded precomputed_results.pkl)
 
@@ -50,7 +51,7 @@ Requires at least 32 GB of RAM.
 python scripts/train_dmd.py
 ```
 
-Output: `data/dum/year_2023/DMD_r_5_day_34_0_thin_2_win_7.pkl` (~616 MB)
+Output: `data/DMD_r_5_day_34_0_thin_2_win_7.pkl` (~616 MB)
 
 ### 3. Precompute (optional -- skip if you downloaded precomputed_results.pkl)
 

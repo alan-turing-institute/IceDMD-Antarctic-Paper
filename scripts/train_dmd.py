@@ -19,7 +19,7 @@ Requirements
 
 Output
 ------
-    data/dum/year_2023/DMD_r_5_day_34_0_thin_2_win_7.pkl  (~616 MB)
+    data/DMD_r_5_day_34_0_thin_2_win_7.pkl  (~616 MB)
 """
 
 import os

@@ -51,12 +51,10 @@ FIGURE_DIR = os.path.join(REPO_ROOT, "figures")
 PRECOMPUTED_FILE = os.path.join(DATA_DIR, "precomputed_results.pkl")
 
 # Raw observation data
-OBS_DATA_PATH = os.path.join(
-    DATA_DIR, "Clean_Antarctic_data", "Antarctic_years_1989_2024i.pkl"
-)
+OBS_DATA_PATH = os.path.join(DATA_DIR, "Antarctic_years_1989_2024i.pkl")
 
 # Pre-trained DMD model
 DMD_MODEL_PATH = os.path.join(
-    DATA_DIR, "dum", f"year_{REF_YEAR}",
+    DATA_DIR,
     f"DMD_r_{RANK}_day_{YEAR_INDEX}_{DAY_INDEX}_thin_{THIN}_win_{WINDOW}.pkl",
 )
