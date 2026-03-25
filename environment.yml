@@ -10,5 +10,8 @@ dependencies:
   - tqdm
   - dill
   - pip
+  - xarray
+  - pandas
+  - seaborn
   - pip:
     - pydmd
