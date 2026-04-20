@@ -1,4 +1,4 @@
-# SIC-DMD: Sea Ice Concentration Forecasting with Dynamic Mode Decomposition
+# IceDMD: Sea Ice Concentration Forecasting with Dynamic Mode Decomposition
 
 Code to reproduce the figures in the paper.
 
