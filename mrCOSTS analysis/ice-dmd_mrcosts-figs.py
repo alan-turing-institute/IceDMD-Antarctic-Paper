@@ -45,7 +45,7 @@ try:
     # Proceed using the logic that works for a notebook
     os.chdir(os.path.join(".."))
     dir_ice = os.getcwd()
-    
+
 except NameError:
     # Otherwise we use the logic for a python executable
     dir_ice = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -89,7 +89,7 @@ lines = ["-", "--", "-.", ":"]
 # In[4]:
 
 
-print("="*60)
+print("=" * 60)
 print("loading observations...")
 print("")
 os.chdir(dir_ice_data)
@@ -157,7 +157,7 @@ relative_filter_length = 4
 # Set fit to True in order to run mrCOSTS, otherwise it uses the saved mrCOSTS fit.
 fit = False
 if fit:
-    print("="*60)
+    print("=" * 60)
     print("fitting mrCOSTS...")
     print("")
     mrc = mrCOSTS(
@@ -174,7 +174,7 @@ if fit:
 
     mrc.fit(data_to_fit, np.atleast_2d(ts))
 else:
-    print("="*60)
+    print("=" * 60)
     print("skipping fitting mrCOSTS...")
     print("")
 
@@ -185,7 +185,7 @@ else:
 
 
 # Load the mrCOSTS fits specified by `mrcosts_name`
-print("="*60)
+print("=" * 60)
 print("loading mrCOSTS results...")
 print("")
 
@@ -194,7 +194,9 @@ filename = ".".join([data_name, mrcosts_name])
 file_list = glob.glob(filename + "*.nc")
 
 if len(file_list) == 0:
-    print("mrCOSTS fits could not be found. mrCOSTS must be fit prior to proceeding by setting `fit=True`.")
+    print(
+        "mrCOSTS fits could not be found. mrCOSTS must be fit prior to proceeding by setting `fit=True`."
+    )
     sys.exit(1)
 
 # If mrCOSTS was fit overwrite any pre-existing fit files with the same name.
@@ -215,7 +217,7 @@ mrc.from_netcdf(file_list)
 # In[10]:
 
 
-print("="*60)
+print("=" * 60)
 print("Building scale-aware reconstructions...")
 print("")
 
@@ -361,7 +363,7 @@ ice_exists_index = ds_obs.concentration.sum(dim="time") > 0
 # In[20]:
 
 
-print("="*60)
+print("=" * 60)
 print("Creating Figure S1...")
 print("")
 
@@ -567,7 +569,7 @@ ds_amp = xr.Dataset(
 # In[23]:
 
 
-print("="*60)
+print("=" * 60)
 print("Creating Figure 4...")
 print("")
 
@@ -624,7 +626,7 @@ fig.savefig("fig4.mrCOSTS_band-amplitudes.pdf", dpi=300, bbox_inches="tight")
 # In[24]:
 
 
-print("="*60)
+print("=" * 60)
 print("Creating Figure 2...")
 print("")
 
@@ -724,7 +726,7 @@ monthly_anom_rolling.plot(
     color="k",
     lw=2,
 )
-ax.set_ylabel("TIC anomaly (10$^6$ km$^2$)")
+ax.set_ylabel("SIA anomaly (10$^6$ km$^2$)")
 ax.fill_between(
     [pd.Timestamp("2014-01-1"), pd.Timestamp("2017-01-1")],
     -4,
@@ -759,7 +761,7 @@ ax = axes[1]
 (xr_all_interannual + xr_background_edit).plot(
     ax=ax, label=r"$\tilde{x}_{bgd} + \tilde{x}_{>2yr}$", color="k"
 )
-xr_background_edit.plot(ax=ax, label=r"$\tilde{x}_{bgd}$", color=tol_bright_reorder[3])
+xr_background_edit.plot(ax=ax, label=r"$\tilde{x}_{bgd}$", color=tol_bright_reorder[2])
 
 for nds, ds in enumerate(xr_modes):
     label = xr_labels[nds]
@@ -789,7 +791,7 @@ ax.fill_between(
 
 ax.set_title("")
 ax.legend(ncols=5, loc="upper left")
-ax.set_ylabel("total ice anomaly (10$^6$ km$^2$)")
+ax.set_ylabel("SIA anomaly (10$^6$ km$^2$)")
 ax.set_xlabel("")
 ax.set_xlim(pd.Timestamp("1989-01-01"), pd.Timestamp("2024-01-01"))
 ax.set_ylim(-1.5, 1.5)
@@ -809,7 +811,7 @@ fig.savefig("fig2.mrCOSTS-diagnostic.long-term.pdf", bbox_inches="tight")
 # In[29]:
 
 
-print("="*60)
+print("=" * 60)
 print("Creating Figure 3...")
 print("")
 
@@ -976,8 +978,8 @@ ax.plot(
     label=r"$\tilde{x}_{bgd}$",
 )
 
-ax.set_ylabel("TIC anomaly (10$^6$ km$^2$)")
-ax.set_title(r"b) TIC where $\Delta\tilde{\mathbf{x}}_{bgd}$ < 0", loc="left")
+ax.set_ylabel("SIA anomaly (10$^6$ km$^2$)")
+ax.set_title(r"b) where $\Delta\tilde{\mathbf{x}}_{bgd}$ < 0", loc="left")
 ax.set_xticklabels([])
 ax.set_xlim(loss_obs.dropna(dim="time").time[0], loss_obs.dropna(dim="time").time[-1])
 ax.legend(
@@ -1018,8 +1020,8 @@ gain = xr.where(np.isnan(gain), 0, gain)
 gain = gain.integrate("x_km").integrate("y_km") / 10**6
 ax.plot(gain.time, gain - gain.mean(dim="time"), color=tol_bright_reorder[n_band + 1])
 
-ax.set_ylabel("TIC anomaly (10$^6$ km$^2$)")
-ax.set_title(r"c) TIC where $\Delta\tilde{\mathbf{x}}_{bgd}$ > 0", loc="left")
+ax.set_ylabel("SIA anomaly (10$^6$ km$^2$)")
+ax.set_title(r"c) where $\Delta\tilde{\mathbf{x}}_{bgd}$ > 0", loc="left")
 ax.set_xlim(gain_obs.dropna(dim="time").time[0], gain_obs.dropna(dim="time").time[-1])
 
 ## -------------------------------------------------------------------
@@ -1068,7 +1070,7 @@ fig.savefig("fig3.mrcost-x_bgd_spatial-patterns.pdf", bbox_inches="tight")
 # In[35]:
 
 
-print("="*60)
+print("=" * 60)
 print("Creating Figure 5...")
 print("")
 
@@ -1276,7 +1278,7 @@ ds_unpredictable = ds_point_bands.sel(grouped_bands=["0.25y", "other subannual"]
 # In[40]:
 
 
-print("="*60)
+print("=" * 60)
 print("Creating Subpanels for Figure 1...")
 print("")
 
@@ -1343,7 +1345,7 @@ xr_background_edit.plot(ax=ax, label="secular", color="r")
 
 ax.set_title("")
 ax.legend(ncols=5, loc="lower left")
-ax.set_ylabel("total ice anomaly (10$^6$ km$^2$)")
+ax.set_ylabel("SIA anomaly (10$^6$ km$^2$)")
 ax.set_xlabel("")
 ax.set_xlim(pd.Timestamp("2000-01-01"), pd.Timestamp("2024-01-01"))
 ax.set_ylim(-1.5, 1.5)
