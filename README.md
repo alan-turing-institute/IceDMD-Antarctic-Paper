@@ -1,4 +1,4 @@
-# SIC-DMD: Sea Ice Concentration Analysis and Forecasting
+# IceDMD: Sea Ice Concentration Forecasting with Dynamic Mode Decomposition
 
 This repository details how to recreate the Figures from the manuscript "Data-driven
 Diagnostics and Forecasting of Antarctic Sea Ice Concentration" [DOI and link to preprint 
@@ -30,7 +30,7 @@ Run the python script version of the mrCOSTS notebook but first set the `fit` fl
 python mrCOSTS\ analysis/ice-dmd_mrcosts-figs.py
 ```
 
-### 3. REsults
+### 3. Results
 
 Output of all scripts appears in `figures/`.
 
@@ -42,7 +42,8 @@ Download the files listed below and place them under `data/`:
 
 | File | Size | Source |
 |------|------|--------|
-| `Antarctic_years_1989_2024i.pkl` | 22 GB | [Dropbox](https://www.dropbox.com/scl/fi/brr8s8z9s5sty6h7gz89p/Antarctic_years_1989_2024i.pkl?rlkey=qu2olfboxy1yw7awaqavcklia&dl=0) |
+| `ice_conc_sh_ease2-250_icdr-v2p0_*.nc` | 5.7MB per day| `OSI-SAF v2.0` ([DOI](http://dx.doi.org/10.15770/EUM_SAF_OSI_0008)) |
+| `Antarctic_years_1989_2024i.pkl` | 22 GB | [Dropbox](https://www.dropbox.com/scl/fi/brr8s8z9s5sty6h7gz89p/Antarctic_years_1989_2024i.pkl?rlkey=qu2olfboxy1yw7awaqavcklia&dl=0) (post-processed) |
 | `DMD_r_5_day_34_0_thin_2_win_7.pkl` | 616 MB | GitHub Release (upload in progress) |
 | `precomputed_results.pkl` | 1.3 GB | GitHub Release (upload in progress) |
 | `coarsened-15day.all-years.v2024-09-20.nc` | 36 MB | Github |
