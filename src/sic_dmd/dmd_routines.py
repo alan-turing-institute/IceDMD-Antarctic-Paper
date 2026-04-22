@@ -190,7 +190,7 @@ def train_dmd(X_delayed,
     return Lambda, Psi, bn
 
 
-def bootstrap_train_dmd(N_boot_strap, X_delayed, t_delayed, svd_rank=3, 
+def bootstrap_train_dmd(N_boot_strap, X_delayed, t_delayed, MEMBER_SIZE, svd_rank=3,
               eig_constraints={
                         "stable", # choose Re(lambda)<0
                         "conjugate_pairs", # force complex conjugate pairs
@@ -214,7 +214,7 @@ def bootstrap_train_dmd(N_boot_strap, X_delayed, t_delayed, svd_rank=3,
 
     # perform bootstrap resampling
     for i in trange(N_boot_strap):
-        inds = np.unique(np.sort(np.random.randint(0, nt-1, (nt,) ) ) )
+        inds = np.sort(np.random.choice(nt, size=int(nt * MEMBER_SIZE), replace=False))
         X1 = X_delayed[:, inds]
         t1 = t_delayed[inds]
 

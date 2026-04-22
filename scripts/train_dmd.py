@@ -35,7 +35,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 from sic_dmd.config import (
     YEAR_INDEX, DAY_INDEX, WINDOW, THIN, RANK,
     N_BOOTSTRAP, T_TRAIN, TIME_DELAY, EIG_CONSTRAINTS,
-    DATA_DIR, OBS_DATA_PATH, DMD_MODEL_PATH,
+    DATA_DIR, OBS_DATA_PATH, DMD_MODEL_PATH, PYDMD_KWARGS, MEMBER_SIZE
 )
 from sic_dmd.data_wrangle import thin_data, del_leap, get_days_before, window_mean
 from sic_dmd.dmd_routines import (
@@ -101,8 +101,8 @@ def main():
     # -- Bootstrap DMD training --
     print(f"\nTraining {N_BOOTSTRAP} bootstrap DMD members (rank {RANK}) ...")
     L_s, Psi_s_, bn_s = bootstrap_train_dmd(
-        N_BOOTSTRAP, X_delayed, t_delayed,
-        svd_rank=RANK, eig_constraints=EIG_CONSTRAINTS,
+        N_BOOTSTRAP, X_delayed, t_delayed, MEMBER_SIZE,
+        svd_rank=RANK, eig_constraints=EIG_CONSTRAINTS, **PYDMD_KWARGS
     )
 
     # Reshape spatial modes back to (ny, nx) grid
