@@ -23,6 +23,9 @@ N_BOOTSTRAP = 100       # Number of bootstrap DMD ensemble members
 N_BOOTSTRAP_CLIM = 100  # Number of bootstrap resamples for climatology uncertainty
 TIME_DELAY = 2          # Time-delay embedding dimension for DMD
 EIG_CONSTRAINTS = {"stable", "conjugate_pairs"}  # BOPDMD eigenvalue constraints
+# PYDMD_KWARGS = {"varpro_flag": False} # Used for an old version of this script
+PYDMD_KWARGS = {}       # Keywords to pass to the BOPDMD moduel.
+MEMBER_SIZE = 0.2       # Fraction (e.g. 20%) of training set used to train each member.
 
 # Derived
 REF_YEAR = 1989 + YEAR_INDEX   # Calendar year corresponding to t = 0
