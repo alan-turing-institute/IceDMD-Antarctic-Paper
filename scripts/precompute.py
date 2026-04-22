@@ -95,7 +95,7 @@ def compute_climatology(data, x, y):
         climatology += data[yr]
     climatology /= n_years
 
-    climatology_integral = np.trapz(np.trapz(climatology, y, axis=1), x, axis=1)
+    climatology_integral = np.trapezoid(np.trapezoid(climatology, y, axis=1), x, axis=1)
 
     print("Bootstrap climatology uncertainty ...")
     np.random.seed(42)
@@ -110,8 +110,8 @@ def compute_climatology(data, x, y):
             sample_mean += data[yr_idx]
         sample_mean /= n_years
 
-        clim_integral_uq[b] = np.trapz(
-            np.trapz(sample_mean, y, axis=1), x, axis=1,
+        clim_integral_uq[b] = np.trapezoid(
+            np.trapezoid(sample_mean, y, axis=1), x, axis=1,
         )
         for name, pt in PROBES.items():
             clim_probe_uq[name][b] = sample_mean[:, pt[0], pt[1]]
@@ -130,7 +130,7 @@ def evaluate_ensemble(L_s, Psi_s, bn_s, t_train, t_test, x, y, X0):
     n_test = len(t_test)
 
     # -- True training integral --
-    integral_true_train = np.trapz(np.trapz(X0, x, axis=2), y, axis=1)
+    integral_true_train = np.trapezoid(np.trapezoid(X0, x, axis=2), y, axis=1)
 
     # -- Pass 1: evaluate every member on the training window --
     print("Evaluating ensemble on training window ...")
@@ -146,7 +146,7 @@ def evaluate_ensemble(L_s, Psi_s, bn_s, t_train, t_test, x, y, X0):
         X_train_mean += Xi
         norms[i] = np.linalg.norm(Xi.reshape(n_train, -1) - X0_flat) / X0_norm
         for j in range(n_train):
-            integral_train[i, j] = np.trapz(np.trapz(Xi[j], x, axis=1), y)
+            integral_train[i, j] = np.trapezoid(np.trapezoid(Xi[j], x, axis=1), y)
         del Xi
 
     X_train_mean /= n_ens
@@ -186,7 +186,7 @@ def evaluate_ensemble(L_s, Psi_s, bn_s, t_train, t_test, x, y, X0):
             X_test_mean_filt += Xi
             row = np.zeros(n_test)
             for j in range(n_test):
-                row[j] = np.trapz(np.trapz(Xi[j], x, axis=1), y)
+                row[j] = np.trapezoid(np.trapezoid(Xi[j], x, axis=1), y)
             integral_test_filt.append(row)
             cnt_filt += 1
         del Xi
@@ -236,7 +236,7 @@ def main():
 
     integral_true_test = np.zeros(X_test_true.shape[0])
     for i in range(X_test_true.shape[0]):
-        integral_true_test[i] = np.trapz(np.trapz(X_test_true[i], x, axis=1), y)
+        integral_true_test[i] = np.trapezoid(np.trapezoid(X_test_true[i], x, axis=1), y)
 
     # DMD ensemble evaluation
     (ice_integral,
