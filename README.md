@@ -1,7 +1,6 @@
 # IceDMD: Sea Ice Concentration Forecasting with Dynamic Mode Decomposition
 
-This repository details how to recreate the Figures from the manuscript "Data-driven
-Diagnostics and Forecasting of Antarctic Sea Ice Concentration" [DOI and link to preprint 
+This repository details how to recreate the Figures from the manuscript "Multiscale decomposition reveals predictable interannual variability and climate trends in Antarctic sea ice loss" [DOI and link to preprint 
 to be added]. 
 
 ## Quick start (just the figures)
