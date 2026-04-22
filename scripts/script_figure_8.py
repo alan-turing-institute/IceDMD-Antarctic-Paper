@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 """
-Figure 8 -- Combined panel: spatial SIC maps + probe time series.
+Figure 8 -- Combined panel has two parts: spatial SIC maps + probe time series.
+
+These components are produced separately and stiched together for the publication.
 
 Layout (3 rows x 3 columns):
-    (a-c)  Observed SIC at three dates (Mar, Jun, Sep 2023)
-    (d-f)  DMD-predicted SIC at the same dates
-    (g-i)  Time series at three probe locations (A, B, C) with
-           observations in red, DMD mean in black, and +/- 2 sigma
-           uncertainty in grey.  Small inset maps show the probe positions.
+(a-c)  Observed SIC at three dates (Mar, Jun, Sep 2023)
+(d-f)  DMD-predicted SIC at the same dates
+(g-i)  Time series at three probe locations (A, B, C) with
+       observations in red, DMD mean in black, and +/- 2 sigma with physical bounds (0-1)
+       uncertainty in grey.  Small inset maps show the probe positions.
 
-Generates: figures/figure_8_prediction_combined.png
+Generates: figures/figure_8_prediction_part1.png, figures/figure_8_prediction_part2.png
 """
 
 import os
@@ -50,46 +52,49 @@ def main():
     n_days = 365
     dates = [day_index_to_date(t) for t in range(n_days)]
 
-    # -- Build figure --
-    fig = plt.figure(figsize=(14, 14))
-
-    # Top 2 rows: 2x3 spatial maps.  Bottom row: 1x3 time-series with insets.
-    outer = gridspec.GridSpec(2, 1, height_ratios=[2, 1.5], hspace=0.25)
-
-    # --- Spatial maps (rows a-c, d-f) ---
-    gs_maps = gridspec.GridSpecFromSubplotSpec(2, 3, subplot_spec=outer[0],
-                                               wspace=0.05, hspace=0.15)
+    # -- Build the first part of the figure (the spatial maps at given times) --
+    fig, axes = plt.subplots(2, 3, figsize=(12, 7))
     labels_top = list("abc")
     labels_bot = list("def")
     for col, (day_idx, title) in enumerate(snapshot_days):
         # Observed
-        ax_obs = fig.add_subplot(gs_maps[0, col])
+        ax_obs = axes[0, col]
         plot_antarctic_map(ax_obs, X_true[day_idx], mask_land, title=title)
         ax_obs.text(0.02, 0.95, f"({labels_top[col]})", transform=ax_obs.transAxes,
-                    fontsize=11, va="top", fontweight="bold")
+                    fontsize=11, va="top", fontweight="bold", color="w")
         if col == 0:
             ax_obs.set_ylabel("Observed", fontsize=13, labelpad=8)
 
         # Predicted
-        ax_pred = fig.add_subplot(gs_maps[1, col])
+        ax_pred = axes[1, col]
         plot_antarctic_map(ax_pred, np.clip(X_pred[day_idx], 0, 1), mask_land)
         ax_pred.text(0.02, 0.95, f"({labels_bot[col]})", transform=ax_pred.transAxes,
-                     fontsize=11, va="top", fontweight="bold")
+                     fontsize=11, va="top", fontweight="bold", color="w")
         if col == 0:
             ax_pred.set_ylabel("Predicted (DMD)", fontsize=13, labelpad=8)
+    fig.tight_layout()
+    os.makedirs(FIGURE_DIR, exist_ok=True)
+    out = os.path.join(FIGURE_DIR, "figure_8_prediction_part1.png")
+    fig.savefig(out, dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    print(f"Saved {out}")
+
+    # -- Build the 2nd part of the figure (time series at individual points) --
+    fig = plt.figure(figsize=(12, 7))
 
     # --- Probe time series (row g-i) ---
-    gs_probes = gridspec.GridSpecFromSubplotSpec(
-        1, 3, subplot_spec=outer[1], wspace=0.35,
+    gs_probes = gridspec.GridSpec(
+        3, 2, wspace=0.05, width_ratios=[5, 1.2], hspace=0.05
     )
     labels_probe = list("ghi")
-    for col, (name, pt) in enumerate(PROBES.items()):
+    for row, (name, pt) in enumerate(PROBES.items()):
         # Each probe panel: time series on the left, small map inset on the right
-        inner = gridspec.GridSpecFromSubplotSpec(
-            1, 2, subplot_spec=gs_probes[col], width_ratios=[3, 1], wspace=0.08,
-        )
-        ax_ts = fig.add_subplot(inner[0])
-        ax_map = fig.add_subplot(inner[1])
+        ax_ts = fig.add_subplot(gs_probes[row, 0])
+        ax_map = fig.add_subplot(gs_probes[row, 1])
+
+        # Vertical lines corresponding to the spatial map times
+        for col, (day_idx, title) in enumerate(snapshot_days):
+            ax_ts.axvline(dates[day_idx], color='0.5', ls='--', lw=0.5)
 
         # Observations for 2023
         obs = probe_obs[name][YEAR_INDEX][:n_days]
@@ -99,24 +104,33 @@ def main():
         ens = probe_test[name][:, :n_days]
         m = ens.mean(axis=0)
         s = ens.std(axis=0)
+
+        # Bound to physical values
+        min_uq = m - 2 * s
+        min_uq[min_uq < 0] = 0
+        max_uq = m + 2 * s
+        max_uq[max_uq > 1] = 1
         ax_ts.plot(dates, m, color="black", lw=1.2)
-        ax_ts.fill_between(dates, m - 2 * s, m + 2 * s,
+        ax_ts.fill_between(dates, min_uq, max_uq,
                            color="black", alpha=0.1)
 
         ax_ts.set_ylim(-0.05, 1.05)
+        ax_ts.set_ylabel("SIC")
+        ax_ts.text(0.02, 0.95, f"({labels_probe[row]})",
+                   transform=ax_ts.transAxes, fontsize=11, va="top",
+                   fontweight="bold")
+        ax_ts.set_xlim(dates[0], dates[-1])
         ax_ts.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
         ax_ts.xaxis.set_major_locator(mdates.MonthLocator(interval=3))
         ax_ts.tick_params(axis="x", rotation=30)
-        ax_ts.set_ylabel("SIC")
-        ax_ts.text(0.02, 0.95, f"({labels_probe[col]})",
-                   transform=ax_ts.transAxes, fontsize=11, va="top",
-                   fontweight="bold")
+        if row < 2:
+            ax_ts.set_xticklabels([])
 
         # Inset map
         plot_probe_inset(ax_map, mask_land, pt, name)
 
     os.makedirs(FIGURE_DIR, exist_ok=True)
-    out = os.path.join(FIGURE_DIR, "figure_8_prediction_combined.png")
+    out = os.path.join(FIGURE_DIR, "figure_8_prediction_part2.png")
     fig.savefig(out, dpi=150, bbox_inches="tight")
     plt.close(fig)
     print(f"Saved {out}")
