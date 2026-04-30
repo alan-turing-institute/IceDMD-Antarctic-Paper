@@ -1,7 +1,8 @@
 # IceDMD: Sea Ice Concentration Forecasting with Dynamic Mode Decomposition
 
-This repository details how to recreate the Figures from the manuscript "Multiscale decomposition reveals predictable interannual variability and climate trends in Antarctic sea ice loss" [DOI and link to preprint 
-to be added]. 
+This repository details how to recreate the Figures from the manuscript "Multiscale decomposition reveals predictable interannual variability and climate trends in Antarctic sea ice loss" [DOI](https://doi.org/10.48550/arXiv.2604.26594). 
+
+![image](https://raw.githubusercontent.com/alan-turing-institute/IceDMD-Antarctic-Paper/refs/heads/main/figures/figure1.png)
 
 ## Quick start (just the figures)
 
