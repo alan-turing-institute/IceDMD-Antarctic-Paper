@@ -1,8 +1,18 @@
 # IceDMD: Sea Ice Concentration Forecasting with Dynamic Mode Decomposition
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19679651.svg)](https://doi.org/10.5281/zenodo.19679651)
+[![arXiv](https://img.shields.io/badge/arXiv-2604.26594-b31b1b.svg)](https://arxiv.org/abs/2604.26594) 
+
 This repository details how to recreate the Figures from the manuscript "Multiscale decomposition reveals predictable interannual variability and climate trends in Antarctic sea ice loss" [DOI](https://doi.org/10.48550/arXiv.2604.26594). 
 
 ![image](https://raw.githubusercontent.com/alan-turing-institute/IceDMD-Antarctic-Paper/refs/heads/main/figures/figure1.png)
+
+## Requirements
+
+- **Python**: 3.10+ (managed via conda — see `environment.yml`)
+- **RAM**: 8 GB minimum for figure generation from precomputed results; 32 GB required for full reproduction (DMD training and precomputation)
+- **Disk space**: ~1.5 GB for precomputed results only; ~24 GB for full raw data reproduction
+- **OS**: Linux or macOS recommended; Windows users should use WSL
 
 ## Quick start (just the figures)
 
@@ -140,4 +150,21 @@ scripts/               One script per figure + DMD training + precompute
 data/                  Input data (not tracked in git except those used to fit mrCOSTS)
 figures/               Generated figures (not tracked in git)
 mrCOSTS analysis/      Notebook and script for performing the mrCOSTS analysis
+```
+
+## Citation
+
+If you use this code or data in your work, please cite:
+
+```bibtex
+@misc{yatsyshin2026multiscaledecompositionrevealspredictable,
+      title={Multiscale Decomposition Reveals Predictable Interannual Variability and Climate Trends in Antarctic Sea Ice Loss}, 
+      author={Peter Yatsyshin and Karl Lapo and Oliver Strickson and Louisa van Zeeland and J. Scott Hosking and J. Nathan Kutz},
+      year={2026},
+      eprint={2604.26594},
+      archivePrefix={arXiv},
+      primaryClass={physics.ao-ph},
+      url={https://arxiv.org/abs/2604.26594}, 
+}
+
 ```
